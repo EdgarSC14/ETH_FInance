@@ -6,8 +6,14 @@ import aiRouter from "./routes/ai";
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const corsOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  "http://localhost:3000",
+].filter(Boolean) as string[];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  origin: corsOrigins.length === 1 ? corsOrigins[0] : corsOrigins,
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
@@ -35,19 +41,22 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: "Internal server error" });
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`🚀 AI Financial Copilot running on http://localhost:${PORT}`);
-  console.log(`   DeepSeek: ${process.env.DEEPSEEK_API_KEY && process.env.DEEPSEEK_API_KEY !== "your-key-here" ? "✅ configured" : "⚠️  demo mode (solo contexto EthFinance OS)"}`);
-});
+/** Vercel Services runs Express as serverless; only bind a port locally. */
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 AI Financial Copilot running on http://localhost:${PORT}`);
+    console.log(`   DeepSeek: ${process.env.DEEPSEEK_API_KEY && process.env.DEEPSEEK_API_KEY !== "your-key-here" ? "✅ configured" : "⚠️  demo mode (solo contexto EthFinance OS)"}`);
+  });
 
-server.on("error", (err: NodeJS.ErrnoException) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(`\n❌ Port ${PORT} is already in use (another backend is running).`);
-    console.error(`   Free it: lsof -i :${PORT}   then   kill <PID>`);
-    console.error(`   Or stop the old terminal with Ctrl+C (not Ctrl+Z).\n`);
-    process.exit(1);
-  }
-  throw err;
-});
+  server.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`\n❌ Port ${PORT} is already in use (another backend is running).`);
+      console.error(`   Free it: lsof -i :${PORT}   then   kill <PID>`);
+      console.error(`   Or stop the old terminal with Ctrl+C (not Ctrl+Z).\n`);
+      process.exit(1);
+    }
+    throw err;
+  });
+}
 
 export default app;
