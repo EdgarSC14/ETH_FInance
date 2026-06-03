@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main, Edgar, Victor]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --config.blockExoticSubdeps=false
+
+      - name: Check tracked files for API keys
+        run: bash scripts/check-no-secrets.sh
+
+      - name: Build frontend
+        run: pnpm build:frontend
+
+      - name: Test contracts
+        run: pnpm test:contracts
+
+      - name: Typecheck backend
+        run: pnpm --filter ethfinance-backend exec tsc --noEmit
+
+      - name: Frontend unit tests
+        run: pnpm --filter frontend test
+
+      - name: Backend unit tests
+        run: pnpm --filter ethfinance-backend test
+
+  e2e-smoke:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --config.blockExoticSubdeps=false
+
+      - name: Install Playwright browsers
+        run: pnpm --filter frontend exec playwright install chromium --with-deps
+
+      - name: Build and start app
+        run: |
+          pnpm build:frontend
+          pnpm --filter ethfinance-backend exec tsc
+          pnpm --filter ethfinance-backend start &
+          pnpm --filter frontend start &
+          npx wait-on http://localhost:3000 http://localhost:3001/health -t 120000 || npx wait-on http://localhost:3000 -t 120000
+
+      - name: E2E smoke tests
+        run: pnpm --filter frontend exec playwright test
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
