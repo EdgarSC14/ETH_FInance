@@ -1,9 +1,7 @@
+import "./env";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import aiRouter from "./routes/ai";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
