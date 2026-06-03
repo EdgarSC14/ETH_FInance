@@ -2,3 +2,11 @@ packages:
   - frontend
   - backend
   - contracts
+allowBuilds:
+  bufferutil: true
+  esbuild: true
+  keccak: true
+  secp256k1: true
+  sharp: true
+  unrs-resolver: true
+  utf-8-validate: true

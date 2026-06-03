@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AI Financial Layer – Smart Web3 Account",
   "private": true,
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@11.5.0",
   "scripts": {
     "install:all": "pnpm install --config.blockExoticSubdeps=false && pnpm -r install --config.blockExoticSubdeps=false",
     "dev:frontend": "pnpm --filter frontend dev",
