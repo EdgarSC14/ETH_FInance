@@ -19,7 +19,6 @@ export interface WalletState {
   switchToArbitrumSepolia: () => Promise<void>;
   switchToBaseSepolia: () => Promise<void>;
   switchToScrollSepolia: () => Promise<void>;
-  switchToOptimismSepolia: () => Promise<void>;
   switchToChain: (chainId: number) => Promise<void>;
 }
 
@@ -142,7 +141,6 @@ export function useWallet(): WalletState {
     switchToArbitrumSepolia: () => switchToChain(421614),
     switchToBaseSepolia: () => switchToChain(84532),
     switchToScrollSepolia: () => switchToChain(534351),
-    switchToOptimismSepolia: () => switchToChain(11155420),
     switchToChain,
   };
 }

@@ -36,15 +36,6 @@ export const SUPPORTED_CHAINS: Record<number, EvmChainParams & { numericChainId:
     rpcUrls: ["https://sepolia-rpc.scroll.io"],
     blockExplorerUrls: ["https://sepolia.scrollscan.com"],
   },
-  11155420: {
-    numericChainId: 11155420,
-    label: "Optimism Sepolia",
-    chainId: "0xAA37DC",
-    chainName: "Optimism Sepolia",
-    nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    rpcUrls: ["https://sepolia.optimism.io"],
-    blockExplorerUrls: ["https://sepolia-optimism.etherscan.io"],
-  },
 };
 
 export const DEFAULT_CHAIN_ID = 421614;

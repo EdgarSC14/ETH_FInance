@@ -9,8 +9,7 @@
     "deploy:arbitrum": "hardhat run scripts/deploy.ts --network arbitrumSepolia",
     "deploy:base": "hardhat run scripts/deploy.ts --network baseSepolia",
     "deploy:scroll": "hardhat run scripts/deploy.ts --network scrollSepolia",
-    "deploy:optimism": "hardhat run scripts/deploy.ts --network optimismSepolia",
-    "deploy:all-testnets": "pnpm deploy:base && pnpm deploy:scroll && pnpm deploy:optimism",
+    "deploy:all-testnets": "pnpm deploy:base && pnpm deploy:scroll",
     "node": "hardhat node",
     "verify:addresses": "node scripts/verify-address-checksums.mjs"
   },

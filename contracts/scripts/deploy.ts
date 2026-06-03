@@ -127,7 +127,6 @@ function envPrefixForNetwork(key: NetworkKey): string {
     arbitrumSepolia: "ARBITRUM_SEPOLIA",
     baseSepolia: "BASE_SEPOLIA",
     scrollSepolia: "SCROLL_SEPOLIA",
-    optimismSepolia: "OPTIMISM_SEPOLIA",
   };
   return map[key];
 }

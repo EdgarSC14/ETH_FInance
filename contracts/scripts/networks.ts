@@ -10,8 +10,7 @@ export type NetworkKey =
   | "localhost"
   | "arbitrumSepolia"
   | "baseSepolia"
-  | "scrollSepolia"
-  | "optimismSepolia";
+  | "scrollSepolia";
 
 export interface NetworkConfig {
   key: NetworkKey;
@@ -57,13 +56,6 @@ export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
     name: "Scroll Sepolia",
     defaultUsdc: "0x2a56d0544C45A59486665a83987C65317367B901",
     explorer: "https://sepolia.scrollscan.com",
-  },
-  optimismSepolia: {
-    key: "optimismSepolia",
-    chainId: 11155420,
-    name: "Optimism Sepolia",
-    defaultUsdc: "0x5fD84259D06603f7aA9162260a644DA2997f813A",
-    explorer: "https://sepolia-optimism.etherscan.io",
   },
 };
 

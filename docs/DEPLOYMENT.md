@@ -48,9 +48,9 @@ NEXT_PUBLIC_PAYMENT_ROUTER_ARBITRUM_SEPOLIA=0xC4f042E8C205735A7b0224451c4c5dD88f
 NEXT_PUBLIC_REPUTATION_ARBITRUM_SEPOLIA=0xD55d3B323D168BcFD00aB2209Cb2f4C24f411a06
 ```
 
-### Base / Optimism Sepolia
+### Base Sepolia
 
-Rellena tras `deploy:base` o `deploy:optimism` (ver salida del script).
+Rellena tras `deploy:base` (ver salida del script).
 
 ### Backend + frontend (Vercel Services)
 
@@ -67,7 +67,6 @@ FRONTEND_URL=https://tu-dominio.vercel.app
 | Arbitrum Sepolia | 421614 | `0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d` |
 | Base Sepolia | 84532 | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
 | Scroll Sepolia | 534351 | `0x2a56d0544C45A59486665a83987C65317367B901` |
-| Optimism Sepolia | 11155420 | `0x5fD84259D06603f7aA9162260a644DA2997f813A` |
 
 Fuente: [Circle Faucet](https://faucet.circle.com/).
 

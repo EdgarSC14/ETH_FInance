@@ -19,8 +19,7 @@
     "verify:addresses": "pnpm --filter ethfinance-contracts run verify:addresses",
     "deploy:arbitrum": "pnpm --filter ethfinance-contracts deploy:arbitrum",
     "deploy:base": "pnpm --filter ethfinance-contracts deploy:base",
-    "deploy:scroll": "pnpm --filter ethfinance-contracts deploy:scroll",
-    "deploy:optimism": "pnpm --filter ethfinance-contracts deploy:optimism"
+    "deploy:scroll": "pnpm --filter ethfinance-contracts deploy:scroll"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"

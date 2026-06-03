@@ -5,7 +5,6 @@ export const USDC_BY_CHAIN: Record<number, string> = {
   421614: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
   84532: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
   534351: "0x2a56d0544C45A59486665a83987C65317367B901",
-  11155420: "0x5fD84259D06603f7aA9162260a644DA2997f813A",
 };
 
 export const CONTRACT_ADDRESSES: Record<
@@ -65,14 +64,6 @@ export const CONTRACT_ADDRESSES: Record<
       "0xa1C7142598Cbd26135544b074D4cee04ddd61002",
     ),
     usdc: USDC_BY_CHAIN[534351],
-  },
-  // Optimism Sepolia
-  11155420: {
-    smartVault: resolveContractAddress(process.env.NEXT_PUBLIC_VAULT_OPTIMISM_SEPOLIA, ""),
-    goalManager: resolveContractAddress(process.env.NEXT_PUBLIC_GOAL_MANAGER_OPTIMISM_SEPOLIA, ""),
-    paymentRouter: resolveContractAddress(process.env.NEXT_PUBLIC_PAYMENT_ROUTER_OPTIMISM_SEPOLIA, ""),
-    reputationRegistry: resolveContractAddress(process.env.NEXT_PUBLIC_REPUTATION_OPTIMISM_SEPOLIA, ""),
-    usdc: USDC_BY_CHAIN[11155420],
   },
   // Local Hardhat
   1337: {
