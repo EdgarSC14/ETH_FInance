@@ -11,7 +11,8 @@
     "deploy:scroll": "hardhat run scripts/deploy.ts --network scrollSepolia",
     "deploy:optimism": "hardhat run scripts/deploy.ts --network optimismSepolia",
     "deploy:all-testnets": "pnpm deploy:base && pnpm deploy:scroll && pnpm deploy:optimism",
-    "node": "hardhat node"
+    "node": "hardhat node",
+    "verify:addresses": "node scripts/verify-address-checksums.mjs"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",

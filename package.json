@@ -16,6 +16,7 @@
     "test": "pnpm --filter frontend test && pnpm --filter ethfinance-backend test",
     "typecheck:backend": "pnpm --filter ethfinance-backend exec tsc --noEmit",
     "check:secrets": "bash scripts/check-no-secrets.sh",
+    "verify:addresses": "pnpm --filter ethfinance-contracts run verify:addresses",
     "deploy:arbitrum": "pnpm --filter ethfinance-contracts deploy:arbitrum",
     "deploy:base": "pnpm --filter ethfinance-contracts deploy:base",
     "deploy:scroll": "pnpm --filter ethfinance-contracts deploy:scroll",

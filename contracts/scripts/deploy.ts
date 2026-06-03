@@ -7,6 +7,7 @@ import {
   resolveUsdcAddress,
   type NetworkKey,
 } from "./networks";
+import { checksumAddress } from "./checksum";
 
 export interface DeploymentAddresses {
   network: string;
@@ -83,13 +84,13 @@ async function main() {
   const payload: DeploymentAddresses = {
     network: network.name,
     chainId: Number(chainId),
-    deployer: deployer.address,
+    deployer: checksumAddress(deployer.address),
     deployedAt: new Date().toISOString(),
-    usdc: usdcAddress,
-    smartVault: vaultAddr,
-    goalManager: goalAddr,
-    paymentRouter: routerAddr,
-    reputationRegistry: reputationAddr,
+    usdc: checksumAddress(usdcAddress),
+    smartVault: checksumAddress(vaultAddr),
+    goalManager: checksumAddress(goalAddr),
+    paymentRouter: checksumAddress(routerAddr),
+    reputationRegistry: checksumAddress(reputationAddr),
   };
 
   const outDir = path.join(__dirname, "..", "deployments");
@@ -113,10 +114,10 @@ function printFrontendEnv(networkKey: NetworkKey | null, d: DeploymentAddresses)
 
   const prefix = envPrefixForNetwork(networkKey);
   console.log("\n--- Frontend .env.local (copy) ---");
-  console.log(`NEXT_PUBLIC_VAULT_${prefix}=${d.smartVault}`);
-  console.log(`NEXT_PUBLIC_GOAL_MANAGER_${prefix}=${d.goalManager}`);
-  console.log(`NEXT_PUBLIC_PAYMENT_ROUTER_${prefix}=${d.paymentRouter}`);
-  console.log(`NEXT_PUBLIC_REPUTATION_${prefix}=${d.reputationRegistry}`);
+  console.log(`NEXT_PUBLIC_VAULT_${prefix}=${checksumAddress(d.smartVault)}`);
+  console.log(`NEXT_PUBLIC_GOAL_MANAGER_${prefix}=${checksumAddress(d.goalManager)}`);
+  console.log(`NEXT_PUBLIC_PAYMENT_ROUTER_${prefix}=${checksumAddress(d.paymentRouter)}`);
+  console.log(`NEXT_PUBLIC_REPUTATION_${prefix}=${checksumAddress(d.reputationRegistry)}`);
 }
 
 function envPrefixForNetwork(key: NetworkKey): string {

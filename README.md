@@ -169,11 +169,20 @@ pnpm --filter ethfinance-contracts deploy:arbitrum
 # Copy contract addresses into frontend/.env.local
 ```
 
+### Multi-chain production (Vercel + Scroll / Arbitrum / …)
+
+See **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** for env vars per chain, EIP-55 checksums, redeploy rules, and troubleshooting.
+
+```bash
+pnpm verify:addresses   # validar checksums USDC + contratos baked-in
+```
+
 ### Useful commands
 
 | Command | Description |
 |---|---|
 | `pnpm install` | Install all monorepo dependencies |
+| `pnpm verify:addresses` | Check EIP-55 checksums for USDC and default contract addresses |
 | `pnpm dev` | Run frontend + backend in parallel |
 | `pnpm dev:frontend` | Start Next.js dev server |
 | `pnpm dev:backend` | Start AI backend |

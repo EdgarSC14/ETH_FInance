@@ -3,6 +3,8 @@
  * Override USDC with USDC_ADDRESS in .env when Circle updates addresses.
  */
 
+import { checksumAddress } from "./checksum";
+
 export type NetworkKey =
   | "hardhat"
   | "localhost"
@@ -53,14 +55,14 @@ export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
     key: "scrollSepolia",
     chainId: 534351,
     name: "Scroll Sepolia",
-    defaultUsdc: "0x2a56D0544c45a59486665a83987c65317367b901",
+    defaultUsdc: "0x2a56d0544C45A59486665a83987C65317367B901",
     explorer: "https://sepolia.scrollscan.com",
   },
   optimismSepolia: {
     key: "optimismSepolia",
     chainId: 11155420,
     name: "Optimism Sepolia",
-    defaultUsdc: "0x5fd84259d06603F7AA9162260a644da2997f813A",
+    defaultUsdc: "0x5fD84259D06603f7aA9162260a644DA2997f813A",
     explorer: "https://sepolia-optimism.etherscan.io",
   },
 };
@@ -78,11 +80,12 @@ export function resolveUsdcAddress(networkKey: NetworkKey): string {
     return fromEnv || "";
   }
   if (fromEnv) {
+    const normalized = checksumAddress(fromEnv);
     console.warn(
-      `[deploy] USDC_ADDRESS override (${fromEnv}) on ${networkKey}. ` +
+      `[deploy] USDC_ADDRESS override (${normalized}) on ${networkKey}. ` +
         `Default for this chain is ${defaultUsdc || "MockUSDC"}. Clear USDC_ADDRESS if unsure.`,
     );
-    return fromEnv;
+    return normalized;
   }
   return defaultUsdc;
 }

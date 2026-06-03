@@ -1,3 +1,13 @@
+import { resolveContractAddress } from "./addresses";
+
+/** Circle testnet USDC — EIP-55 checksums (see docs/DEPLOYMENT.md). */
+export const USDC_BY_CHAIN: Record<number, string> = {
+  421614: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+  84532: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  534351: "0x2a56d0544C45A59486665a83987C65317367B901",
+  11155420: "0x5fD84259D06603f7aA9162260a644DA2997f813A",
+};
+
 export const CONTRACT_ADDRESSES: Record<
   number,
   {
@@ -10,42 +20,66 @@ export const CONTRACT_ADDRESSES: Record<
 > = {
   // Arbitrum Sepolia — deploy 2026-05-30 (Victor)
   421614: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_ARBITRUM_SEPOLIA || "0x647C771ECF69958E1E509A5bEB14363690Efe91F",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_ARBITRUM_SEPOLIA || "0x2A1cb7E1596Cd8c7F78E748f36f466f19365eaBB",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_ARBITRUM_SEPOLIA || "0xC4f042E8C205735A7b0224451c4c5dD88fb78d8d",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_ARBITRUM_SEPOLIA || "0xD55d3B323D168BcFD00aB2209Cb2f4C24f411a06",
-    usdc: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+    smartVault: resolveContractAddress(
+      process.env.NEXT_PUBLIC_VAULT_ARBITRUM_SEPOLIA,
+      "0x647C771ECF69958E1E509A5bEB14363690Efe91F",
+    ),
+    goalManager: resolveContractAddress(
+      process.env.NEXT_PUBLIC_GOAL_MANAGER_ARBITRUM_SEPOLIA,
+      "0x2A1cb7E1596Cd8c7F78E748f36f466f19365eaBB",
+    ),
+    paymentRouter: resolveContractAddress(
+      process.env.NEXT_PUBLIC_PAYMENT_ROUTER_ARBITRUM_SEPOLIA,
+      "0xC4f042E8C205735A7b0224451c4c5dD88fb78d8d",
+    ),
+    reputationRegistry: resolveContractAddress(
+      process.env.NEXT_PUBLIC_REPUTATION_ARBITRUM_SEPOLIA,
+      "0xD55d3B323D168BcFD00aB2209Cb2f4C24f411a06",
+    ),
+    usdc: USDC_BY_CHAIN[421614],
   },
   // Base Sepolia — fill after: pnpm --filter ethfinance-contracts deploy:base
   84532: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_BASE_SEPOLIA || "",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_BASE_SEPOLIA || "",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_BASE_SEPOLIA || "",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA || "",
-    usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    smartVault: resolveContractAddress(process.env.NEXT_PUBLIC_VAULT_BASE_SEPOLIA, ""),
+    goalManager: resolveContractAddress(process.env.NEXT_PUBLIC_GOAL_MANAGER_BASE_SEPOLIA, ""),
+    paymentRouter: resolveContractAddress(process.env.NEXT_PUBLIC_PAYMENT_ROUTER_BASE_SEPOLIA, ""),
+    reputationRegistry: resolveContractAddress(process.env.NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA, ""),
+    usdc: USDC_BY_CHAIN[84532],
   },
   // Scroll Sepolia — deploy 2026-06-03
   534351: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA || "0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA || "0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA || "0xc18d514daA63f7733850121cE02FC995197314d1",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA || "0xa1C7142598Cbd26135544b074D4cee04ddd61002",
-    usdc: "0x2a56D0544c45a59486665a83987c65317367b901",
+    smartVault: resolveContractAddress(
+      process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA,
+      "0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4",
+    ),
+    goalManager: resolveContractAddress(
+      process.env.NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA,
+      "0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33",
+    ),
+    paymentRouter: resolveContractAddress(
+      process.env.NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA,
+      "0xc18d514daA63f7733850121cE02FC995197314d1",
+    ),
+    reputationRegistry: resolveContractAddress(
+      process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA,
+      "0xa1C7142598Cbd26135544b074D4cee04ddd61002",
+    ),
+    usdc: USDC_BY_CHAIN[534351],
   },
   // Optimism Sepolia
   11155420: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_OPTIMISM_SEPOLIA || "",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_OPTIMISM_SEPOLIA || "",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_OPTIMISM_SEPOLIA || "",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_OPTIMISM_SEPOLIA || "",
-    usdc: "0x5fd84259d06603F7AA9162260a644da2997f813A",
+    smartVault: resolveContractAddress(process.env.NEXT_PUBLIC_VAULT_OPTIMISM_SEPOLIA, ""),
+    goalManager: resolveContractAddress(process.env.NEXT_PUBLIC_GOAL_MANAGER_OPTIMISM_SEPOLIA, ""),
+    paymentRouter: resolveContractAddress(process.env.NEXT_PUBLIC_PAYMENT_ROUTER_OPTIMISM_SEPOLIA, ""),
+    reputationRegistry: resolveContractAddress(process.env.NEXT_PUBLIC_REPUTATION_OPTIMISM_SEPOLIA, ""),
+    usdc: USDC_BY_CHAIN[11155420],
   },
   // Local Hardhat
   1337: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_LOCAL || "",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_LOCAL || "",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_LOCAL || "",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_LOCAL || "",
+    smartVault: resolveContractAddress(process.env.NEXT_PUBLIC_VAULT_LOCAL, ""),
+    goalManager: resolveContractAddress(process.env.NEXT_PUBLIC_GOAL_MANAGER_LOCAL, ""),
+    paymentRouter: resolveContractAddress(process.env.NEXT_PUBLIC_PAYMENT_ROUTER_LOCAL, ""),
+    reputationRegistry: resolveContractAddress(process.env.NEXT_PUBLIC_REPUTATION_LOCAL, ""),
     usdc: "",
   },
 };
