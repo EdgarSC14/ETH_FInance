@@ -33,7 +33,10 @@ export const SUPPORTED_CHAINS: Record<number, EvmChainParams & { numericChainId:
     chainId: "0x8274F",
     chainName: "Scroll Sepolia",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    rpcUrls: ["https://sepolia-rpc.scroll.io"],
+    rpcUrls: [
+      "https://sepolia-rpc.scroll.io",
+      "https://rpc.scroll.io/sepolia",
+    ],
     blockExplorerUrls: ["https://sepolia.scrollscan.com"],
   },
 };

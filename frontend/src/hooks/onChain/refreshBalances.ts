@@ -17,29 +17,36 @@ export async function refreshOnChainBalances(opts: {
   try {
     const rawEth = await provider.getBalance(address);
     setNativeEthBalance(Number(ethers.formatEther(rawEth)));
+  } catch {
+    setNativeEthBalance(null);
+  }
 
-    const cfg = CONTRACT_ADDRESSES[chainId];
-    if (!cfg?.usdc) {
-      setWalletUsdcBalance(null);
-      setVaultBalance(0);
-      return;
-    }
+  const cfg = CONTRACT_ADDRESSES[chainId];
+  if (!cfg?.usdc) {
+    setWalletUsdcBalance(null);
+    setVaultBalance(0);
+    return;
+  }
 
+  try {
     const usdc = new ethers.Contract(cfg.usdc, ERC20_ABI, provider);
     const rawWallet = await usdc.balanceOf(address);
     setWalletUsdcBalance(Number(ethers.formatUnits(rawWallet, 6)));
-
-    const vaultAddr = cfg.smartVault?.trim();
-    if (vaultAddr) {
-      const vault = new ethers.Contract(vaultAddr, VAULT_READ_ABI, provider);
-      const rawVault = await vault.balances(address);
-      setVaultBalance(Number(ethers.formatUnits(rawVault, 6)));
-    } else {
-      setVaultBalance(0);
-    }
   } catch {
     setWalletUsdcBalance(null);
-    setNativeEthBalance(null);
+  }
+
+  const vaultAddr = cfg.smartVault?.trim();
+  if (!vaultAddr) {
+    setVaultBalance(0);
+    return;
+  }
+
+  try {
+    const vault = new ethers.Contract(vaultAddr, VAULT_READ_ABI, provider);
+    const rawVault = await vault.balances(address);
+    setVaultBalance(Number(ethers.formatUnits(rawVault, 6)));
+  } catch {
     setVaultBalance(0);
   }
 }
