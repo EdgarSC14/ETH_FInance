@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c100e"/>
+      <stop offset="100%" stop-color="#050807"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#10b981" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <path d="M80 420 L200 320 L320 380 L440 220 L560 280 L680 140 L720 180" stroke="url(#line)" stroke-width="3" fill="none" filter="url(#glow)"/>
+  <path d="M80 420 L200 320 L320 380 L440 220 L560 280 L680 140 L720 180 L720 480 L80 480 Z" fill="url(#line)" fill-opacity="0.08"/>
+  <circle cx="680" cy="140" r="6" fill="#10b981"/>
+  <circle cx="440" cy="220" r="5" fill="#34d399"/>
+  <circle cx="200" cy="320" r="4" fill="#6ee7b7" fill-opacity="0.8"/>
+  <text x="80" y="120" fill="#f4f7f5" font-family="system-ui,sans-serif" font-size="28" font-weight="600">Smart Finance</text>
+  <text x="80" y="155" fill="rgba(244,247,245,0.45)" font-family="system-ui,sans-serif" font-size="14">USDC · Vault · AI Copilot</text>
+</svg>

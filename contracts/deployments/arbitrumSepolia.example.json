@@ -1,0 +1,11 @@
+{
+  "network": "arbitrumSepolia",
+  "chainId": 421614,
+  "deployer": "0x...",
+  "deployedAt": "2026-05-25T00:00:00.000Z",
+  "usdc": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+  "smartVault": "0x33897e8f04D03f53b1F5530aB95A05391D4b59b1",
+  "goalManager": "0xeA2Fd4d213b5310968B328c84c6A22a4D721E0FA",
+  "paymentRouter": "0x9319Ed6E0eb84C1eF34A991998e24d495c14Cb0D",
+  "reputationRegistry": "0x0000000000000000000000000000000000000000"
+}

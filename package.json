@@ -1,0 +1,27 @@
+{
+  "name": "ethfinance-os",
+  "version": "1.0.0",
+  "description": "AI Financial Layer – Smart Web3 Account",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "install:all": "pnpm install --config.blockExoticSubdeps=false && pnpm -r install --config.blockExoticSubdeps=false",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "pnpm --filter ethfinance-backend dev",
+    "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend\"",
+    "dev:all": "concurrently -n contracts,backend,frontend -c blue,green,magenta \"pnpm --filter ethfinance-contracts node\" \"pnpm --filter ethfinance-backend dev\" \"pnpm --filter frontend dev\"",
+    "build:frontend": "pnpm --filter frontend build",
+    "build:contracts": "pnpm --filter ethfinance-contracts compile",
+    "test:contracts": "pnpm --filter ethfinance-contracts test",
+    "test": "pnpm --filter frontend test && pnpm --filter ethfinance-backend test",
+    "typecheck:backend": "pnpm --filter ethfinance-backend exec tsc --noEmit",
+    "check:secrets": "bash scripts/check-no-secrets.sh",
+    "deploy:arbitrum": "pnpm --filter ethfinance-contracts deploy:arbitrum",
+    "deploy:base": "pnpm --filter ethfinance-contracts deploy:base",
+    "deploy:scroll": "pnpm --filter ethfinance-contracts deploy:scroll",
+    "deploy:optimism": "pnpm --filter ethfinance-contracts deploy:optimism"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
