@@ -1,0 +1,11 @@
+{
+  "network": "scrollSepolia",
+  "chainId": 534351,
+  "deployer": "0x2b03D9bda9324500C15e300d50D72140CFCd4a5C",
+  "deployedAt": "2026-06-03T03:07:57.529Z",
+  "usdc": "0x2a56D0544c45a59486665a83987c65317367b901",
+  "smartVault": "0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4",
+  "goalManager": "0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33",
+  "paymentRouter": "0xc18d514daA63f7733850121cE02FC995197314d1",
+  "reputationRegistry": "0xa1C7142598Cbd26135544b074D4cee04ddd61002"
+}

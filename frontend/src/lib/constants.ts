@@ -24,12 +24,12 @@ export const CONTRACT_ADDRESSES: Record<
     reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA || "",
     usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
   },
-  // Scroll Sepolia
+  // Scroll Sepolia — deploy 2026-06-03
   534351: {
-    smartVault: process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA || "",
-    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA || "",
-    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA || "",
-    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA || "",
+    smartVault: process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA || "0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4",
+    goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA || "0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33",
+    paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA || "0xc18d514daA63f7733850121cE02FC995197314d1",
+    reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA || "0xa1C7142598Cbd26135544b074D4cee04ddd61002",
     usdc: "0x2a56D0544c45a59486665a83987c65317367b901",
   },
   // Optimism Sepolia
