@@ -26,7 +26,7 @@ Sin redeploy tras cambiar env vars, el bundle sigue viejo y verás "faltan contr
 
 ## 3. Variables de entorno por red (Vercel / hosting)
 
-Copia las 4 líneas que imprime el script al final de `deploy:<red>`.
+Copia las líneas que imprime el script al final de `deploy:<red>` (4 contratos + USDC en Scroll).
 
 ### Scroll Sepolia (534351) — desplegado 2026-06-03
 
@@ -35,7 +35,10 @@ NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA=0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4
 NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA=0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33
 NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA=0xc18d514daA63f7733850121cE02FC995197314d1
 NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA=0xa1C7142598Cbd26135544b074D4cee04ddd61002
+NEXT_PUBLIC_USDC_SCROLL_SEPOLIA=0x...   # MockUSDC si deploy:scroll sin USDC de Circle
 ```
+
+En Scroll, `deploy:scroll` despliega **MockUSDC** por defecto; el panel muestra **Acuñar USDC de prueba**. Si usas USDC de Circle en Scroll, el fallback en `constants.ts` ya incluye la dirección canónica.
 
 *(Opcional en Vercel si ya están en `constants.ts` como defaults.)*
 
@@ -66,9 +69,11 @@ FRONTEND_URL=https://tu-dominio.vercel.app
 |-----|----------|----------------|
 | Arbitrum Sepolia | 421614 | `0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d` |
 | Base Sepolia | 84532 | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
-| Scroll Sepolia | 534351 | `0x2a56d0544C45A59486665a83987C65317367B901` |
+| Scroll Sepolia | 534351 | Circle `0x2a56d0544C45A59486665a83987C65317367B901` o **MockUSDC** tras `deploy:scroll` |
 
-Fuente: [Circle Faucet](https://faucet.circle.com/).
+Redes soportadas: Arbitrum, Base y Scroll Sepolia (sin Optimism).
+
+Fuente USDC Circle: [faucet.circle.com](https://faucet.circle.com/).
 
 ## 5. Checksum EIP-55 (`bad address checksum`)
 

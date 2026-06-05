@@ -54,7 +54,8 @@ export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
     key: "scrollSepolia",
     chainId: 534351,
     name: "Scroll Sepolia",
-    defaultUsdc: "0x2a56d0544C45A59486665a83987C65317367B901",
+    // Sin USDC canónico de Circle en Scroll → deploy.ts despliega MockUSDC si está vacío
+    defaultUsdc: "",
     explorer: "https://sepolia.scrollscan.com",
   },
 };

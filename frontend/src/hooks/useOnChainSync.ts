@@ -89,6 +89,36 @@ export function useOnChainSync() {
     refreshAll();
   }, [isConnected, refreshAll, balanceRefreshKey, goalsRefreshKey, paymentsRefreshKey, transactionsRefreshKey]);
 
+  // Clear stale on-chain data immediately when the user switches networks in
+  // MetaMask. Without this, the dashboard briefly shows the previous chain's
+  // balances/transactions until the new chain's data arrives.
+  useEffect(() => {
+    if (!isConnected || chainId == null) return;
+    setWalletUsdcBalance(null);
+    setNativeEthBalance(null);
+    setVaultBalance(0);
+    setGoals([]);
+    setPayments([]);
+    setTransactions([]);
+    setOnChainBalancesLoading(true);
+    setOnChainGoalsLoading(true);
+    setOnChainPaymentsLoading(true);
+    setOnChainTransactionsLoading(true);
+  }, [
+    chainId,
+    isConnected,
+    setWalletUsdcBalance,
+    setNativeEthBalance,
+    setVaultBalance,
+    setGoals,
+    setPayments,
+    setTransactions,
+    setOnChainBalancesLoading,
+    setOnChainGoalsLoading,
+    setOnChainPaymentsLoading,
+    setOnChainTransactionsLoading,
+  ]);
+
   useEffect(() => {
     if (isConnected) return;
     setWalletUsdcBalance(null);

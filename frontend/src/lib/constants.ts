@@ -45,7 +45,7 @@ export const CONTRACT_ADDRESSES: Record<
     reputationRegistry: resolveContractAddress(process.env.NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA, ""),
     usdc: USDC_BY_CHAIN[84532],
   },
-  // Scroll Sepolia — deploy 2026-06-03
+  // Scroll Sepolia — deploy 2026-06-03; MockUSDC vía deploy:scroll + NEXT_PUBLIC_USDC_SCROLL_SEPOLIA
   534351: {
     smartVault: resolveContractAddress(
       process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA,
@@ -63,7 +63,10 @@ export const CONTRACT_ADDRESSES: Record<
       process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA,
       "0xa1C7142598Cbd26135544b074D4cee04ddd61002",
     ),
-    usdc: USDC_BY_CHAIN[534351],
+    usdc: resolveContractAddress(
+      process.env.NEXT_PUBLIC_USDC_SCROLL_SEPOLIA,
+      USDC_BY_CHAIN[534351],
+    ),
   },
   // Local Hardhat
   1337: {

@@ -118,6 +118,7 @@ function printFrontendEnv(networkKey: NetworkKey | null, d: DeploymentAddresses)
   console.log(`NEXT_PUBLIC_GOAL_MANAGER_${prefix}=${checksumAddress(d.goalManager)}`);
   console.log(`NEXT_PUBLIC_PAYMENT_ROUTER_${prefix}=${checksumAddress(d.paymentRouter)}`);
   console.log(`NEXT_PUBLIC_REPUTATION_${prefix}=${checksumAddress(d.reputationRegistry)}`);
+  console.log(`NEXT_PUBLIC_USDC_${prefix}=${checksumAddress(d.usdc)}`);
 }
 
 function envPrefixForNetwork(key: NetworkKey): string {
