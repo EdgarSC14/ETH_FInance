@@ -5,7 +5,7 @@ import { ChevronDown, Check, Coins, Layers } from "lucide-react";
 import { cn, formatUSDC } from "@/lib/utils";
 import { useWallet } from "@/hooks/useWallet";
 import { useAppStore } from "@/store/useAppStore";
-import { getSupportedChainIds, getChainLabel, isChainFullyDeployed } from "@/lib/deployments";
+import { getDeployedChainIds, getChainLabel, isChainFullyDeployed } from "@/lib/deployments";
 import { es } from "@/lib/i18n/es";
 import type { WalletDisplayCurrency } from "@/store/useAppStore";
 
@@ -31,7 +31,7 @@ export function WalletMenu({ className, compact }: WalletMenuProps) {
   const vaultBalance = useAppStore((s) => s.vaultBalance);
   const nativeEthBalance = useAppStore((s) => s.nativeEthBalance);
 
-  const supportedChains = getSupportedChainIds();
+  const supportedChains = getDeployedChainIds();
   const totalUsdc = (walletUsdcBalance ?? 0) + vaultBalance;
   const displayAmount =
     walletDisplayCurrency === "usdc"

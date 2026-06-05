@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { CONTRACT_ADDRESSES } from "@/lib/constants";
 import { es } from "@/lib/i18n/es";
 import { Transaction } from "@/types";
+import { getLookbackBlocks, queryFilterChunked } from "@/hooks/onChain/queryFilterChunked";
 
 const VAULT_EVENTS_ABI = [
   "event Deposited(address indexed user, uint256 amount, uint256 timestamp)",
@@ -42,13 +43,13 @@ export async function refreshOnChainTransactions(opts: {
   try {
     const txs: Transaction[] = [];
     const currentBlock = await provider.getBlockNumber();
-    const fromBlock = Math.max(0, currentBlock - 500_000);
+    const fromBlock = Math.max(0, currentBlock - getLookbackBlocks(chainId));
 
     if (cfg.smartVault?.trim()) {
       const vault = new ethers.Contract(cfg.smartVault, VAULT_EVENTS_ABI, provider);
       const [deposits, withdraws] = await Promise.all([
-        vault.queryFilter(vault.filters.Deposited(address), fromBlock),
-        vault.queryFilter(vault.filters.Withdrawn(address), fromBlock),
+        queryFilterChunked<ethers.EventLog>(vault, vault.filters.Deposited(address), fromBlock, currentBlock),
+        queryFilterChunked<ethers.EventLog>(vault, vault.filters.Withdrawn(address), fromBlock, currentBlock),
       ]);
 
       for (const ev of deposits) {
@@ -82,7 +83,12 @@ export async function refreshOnChainTransactions(opts: {
 
     if (cfg.goalManager?.trim()) {
       const goalManager = new ethers.Contract(cfg.goalManager, GOAL_EVENTS_ABI, provider);
-      const funded = await goalManager.queryFilter(goalManager.filters.GoalFunded(null, address), fromBlock);
+      const funded = await queryFilterChunked<ethers.EventLog>(
+        goalManager,
+        goalManager.filters.GoalFunded(null, address),
+        fromBlock,
+        currentBlock,
+      );
 
       for (const ev of funded) {
         if (!("args" in ev) || !ev.args) continue;
@@ -105,7 +111,12 @@ export async function refreshOnChainTransactions(opts: {
       const labelById = new Map(rawPayments.map((p) => [p.id.toString(), p.label]));
 
       for (const payment of rawPayments) {
-        const executed = await router.queryFilter(router.filters.PaymentExecuted(payment.id), fromBlock);
+        const executed = await queryFilterChunked<ethers.EventLog>(
+          router,
+          router.filters.PaymentExecuted(payment.id),
+          fromBlock,
+          currentBlock,
+        );
         for (const ev of executed) {
           if (!("args" in ev) || !ev.args) continue;
           const block = ev.blockNumber != null ? await provider.getBlock(ev.blockNumber) : null;
@@ -125,7 +136,10 @@ export async function refreshOnChainTransactions(opts: {
 
     txs.sort((a, b) => b.date.localeCompare(a.date) || (b.hash ?? "").localeCompare(a.hash ?? ""));
     setTransactions(txs);
-  } catch {
-    // Keep existing list on RPC errors
+  } catch (err) {
+    // Keep existing list on RPC errors but surface for debugging.
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[refreshOnChainTransactions] failed", err);
+    }
   }
 }

@@ -53,14 +53,17 @@ export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
     key: "scrollSepolia",
     chainId: 534351,
     name: "Scroll Sepolia",
-    defaultUsdc: "0x2a56D0544c45a59486665a83987c65317367b901",
+    // Circle does NOT have a canonical USDC on Scroll Sepolia.
+    // Empty default => deploy.ts deploys a MockUSDC and uses it.
+    defaultUsdc: "",
     explorer: "https://sepolia.scrollscan.com",
   },
   optimismSepolia: {
     key: "optimismSepolia",
     chainId: 11155420,
     name: "Optimism Sepolia",
-    defaultUsdc: "0x5fd84259d06603F7AA9162260a644da2997f813A",
+    // Canonical Circle USDC (verified on-chain). Old repo address was wrong.
+    defaultUsdc: "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
     explorer: "https://sepolia-optimism.etherscan.io",
   },
 };

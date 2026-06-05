@@ -1,0 +1,266 @@
+================================================================================
+EthFinance OS  —  Guía de despliegue multi-chain en producción
+================================================================================
+
+Este archivo explica:
+  1) Cómo la app detecta automáticamente la red y la moneda (USDC) correcta.
+  2) Qué hay que hacer para que UNA red que ya tiene contratos desplegados
+     funcione en producción (Vercel/Netlify/donde sea), exactamente como
+     funciona Arbitrum Sepolia hoy.
+  3) Variables de entorno por red.
+  4) Direcciones ya desplegadas (Arbitrum Sepolia + Scroll Sepolia).
+  5) Bug del checksum EIP-55 y cómo evitarlo a futuro.
+  6) Troubleshooting (cache del navegador, etc).
+
+
+================================================================================
+1) CÓMO DETECTA LA APP LA RED Y LA MONEDA
+================================================================================
+
+NO hay que escribir código nuevo cuando agregas una red. La app ya está
+preparada para multi-chain. El flujo es:
+
+  MetaMask te conecta -> useWallet.ts lee el chainId
+                      -> el resto de hooks (useVault, useGoalManager,
+                         usePaymentRouter, etc.) llaman:
+
+         const cfg = CONTRACT_ADDRESSES[chainId];
+
+  CONTRACT_ADDRESSES vive en:
+         frontend/src/lib/constants.ts
+
+  Y mapea cada chainId a:
+         { smartVault, goalManager, paymentRouter, reputationRegistry, usdc }
+
+  Si CUALQUIERA de los 5 está vacío para esa red, la app muestra:
+         "USDC disponible en esta red, pero faltan contratos
+          EthFinance desplegados."
+
+  La metadata de cada red (nombre, RPC, explorador, símbolo) vive en:
+         frontend/src/lib/chains.ts  -> SUPPORTED_CHAINS
+
+  Ambos archivos ya incluyen Arbitrum/Base/Scroll/Optimism Sepolia.
+  Solo cambia si quieres añadir UNA NUEVA red (no es tu caso).
+
+
+================================================================================
+2) HACER QUE SCROLL (o cualquier otra) FUNCIONE EN PRODUCCIÓN
+================================================================================
+
+Una vez que ya desplegaste los contratos (caso: Scroll Sepolia hecho hoy),
+solo tienes que:
+
+  A. Pull a producción del código actualizado.
+     Asegúrate de hacer `git push` con el fix de checksum aplicado a
+     contracts/scripts/networks.ts y frontend/src/lib/constants.ts
+     (ver sección 5).
+
+  B. En el panel de tu hosting (Vercel: Project -> Settings ->
+     Environment Variables) añade las 4 variables NEXT_PUBLIC_* de la red
+     desplegada. Marca los 3 ambientes (Production, Preview, Development).
+
+  C. Re-deploy. Next.js inyecta las NEXT_PUBLIC_* en build time, no en
+     runtime, así que SIEMPRE hay que redeployar tras tocar env vars.
+
+  D. Listo. El usuario conecta MetaMask, cambia a la red en MetaMask,
+     y la app reconoce el chainId y opera con el USDC + contratos de
+     esa red. No hay que tocar más nada.
+
+  Importante: si solo agregas la variable y NO redeployas, el bundle
+  servido sigue siendo el viejo y verás "faltan contratos desplegados".
+
+
+================================================================================
+3) VARIABLES DE ENTORNO POR RED  (las que pones en Vercel/hosting)
+================================================================================
+
+Una vez por cada despliegue, copia las 4 líneas que imprime
+`pnpm --filter ethfinance-contracts deploy:<red>` al final de su output.
+
+Para Scroll Sepolia (ya desplegado HOY, 2026-06-02):
+
+    NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA=0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4
+    NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA=0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33
+    NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA=0xc18d514daA63f7733850121cE02FC995197314d1
+    NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA=0xa1C7142598Cbd26135544b074D4cee04ddd61002
+
+Para Arbitrum Sepolia (defaults ya horneados en constants.ts; NO necesitas
+agregarlos en Vercel, salvo que quieras overridear con un nuevo deploy):
+
+    NEXT_PUBLIC_VAULT_ARBITRUM_SEPOLIA=0x647C771ECF69958E1E509A5bEB14363690Efe91F
+    NEXT_PUBLIC_GOAL_MANAGER_ARBITRUM_SEPOLIA=0x2A1cb7E1596Cd8c7F78E748f36f466f19365eaBB
+    NEXT_PUBLIC_PAYMENT_ROUTER_ARBITRUM_SEPOLIA=0xC4f042E8C205735A7b0224451c4c5dD88fb78d8d
+    NEXT_PUBLIC_REPUTATION_ARBITRUM_SEPOLIA=0xD55d3B323D168BcFD00aB2209Cb2f4C24f411a06
+
+Para Base Sepolia (pendiente, despliega cuando tengas ETH):
+
+    NEXT_PUBLIC_VAULT_BASE_SEPOLIA=...
+    NEXT_PUBLIC_GOAL_MANAGER_BASE_SEPOLIA=...
+    NEXT_PUBLIC_PAYMENT_ROUTER_BASE_SEPOLIA=...
+    NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA=...
+
+Para Optimism Sepolia (pendiente):
+
+    NEXT_PUBLIC_VAULT_OPTIMISM_SEPOLIA=...
+    NEXT_PUBLIC_GOAL_MANAGER_OPTIMISM_SEPOLIA=...
+    NEXT_PUBLIC_PAYMENT_ROUTER_OPTIMISM_SEPOLIA=...
+    NEXT_PUBLIC_REPUTATION_OPTIMISM_SEPOLIA=...
+
+Backend (opcional, override de la URL del API):
+
+    NEXT_PUBLIC_BACKEND_URL=https://tu-backend-en-prod.com
+    # Si no se setea, default: http://localhost:3001
+
+
+================================================================================
+4) DIRECCIONES OFICIALES DE USDC POR RED  (ya en el código)
+================================================================================
+
+No hay que setearlas — están horneadas en constants.ts y networks.ts. Solo
+para referencia:
+
+    Arbitrum Sepolia  (421614)   0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d
+    Base Sepolia      (84532)    0x036CbD53842c5426634e7929541eC2318f3dCF7e
+    Scroll Sepolia    (534351)   0x2a56d0544C45A59486665a83987C65317367B901
+    Optimism Sepolia  (11155420) 0x5fD84259D06603f7aA9162260a644DA2997f813A
+
+Fuente: Circle (faucet.circle.com).
+
+
+================================================================================
+5) BUG QUE TUVIMOS: bad address checksum (EIP-55)
+================================================================================
+
+Síntoma: al desplegar o al depositar, ethers.js v6 lanza:
+    TypeError: bad address checksum
+    (argument="address", value="0x...", code=INVALID_ARGUMENT)
+
+Causa: Ethereum codifica un checksum en las mayúsculas/minúsculas hex
+(EIP-55). Si una letra está mal capitalizada, ethers v6 rechaza la
+dirección por seguridad. El repo original tenía 2 direcciones de USDC con
+casing roto (Scroll y Optimism).
+
+Fix aplicado en este chat:
+  - frontend/src/lib/constants.ts        (USDC Scroll + Optimism)
+  - contracts/scripts/networks.ts        (USDC Scroll + Optimism)
+
+Cómo evitarlo si añades nuevas direcciones:
+  - Copia siempre el casing OFICIAL desde el explorer de la red, o
+  - Normaliza con:  ethers.getAddress(addrEnMinusculas)
+  - Nunca escribas el hex a mano.
+
+Para verificar todas las direcciones del repo:
+
+    cd contracts && node -e "
+      const { ethers } = require('ethers');
+      const addrs = [
+        '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d',  // Arb USDC
+        '0x036CbD53842c5426634e7929541eC2318f3dCF7e',  // Base USDC
+        '0x2a56d0544C45A59486665a83987C65317367B901',  // Scroll USDC
+        '0x5fD84259D06603f7aA9162260a644DA2997f813A',  // Op USDC
+      ];
+      for (const a of addrs) console.log(a, '==', ethers.getAddress(a.toLowerCase()));
+    "
+
+Si alguna no coincide consigo misma -> casing roto -> hay que arreglarla.
+
+
+================================================================================
+6) FLUJO COMPLETO PARA AÑADIR/REPARAR UNA RED  (recap operativo)
+================================================================================
+
+Paso 1: Asegurar gas en la wallet del deployer.
+        Faucets oficiales:
+        Arbitrum Sepolia  https://faucet.quicknode.com/arbitrum/sepolia
+        Base Sepolia      https://portal.cdp.coinbase.com/products/faucet
+        Scroll Sepolia    https://faucet.quicknode.com/scroll/sepolia
+        Optimism Sepolia  https://www.alchemy.com/faucets/optimism-sepolia
+
+Paso 2: Poner clave en contracts/.env (en LOCAL, NUNCA commit).
+        DEPLOYER_PRIVATE_KEY=tu_clave_64_hex
+        (contracts/.env está en .gitignore)
+
+Paso 3: Desplegar:
+        pnpm --filter ethfinance-contracts deploy:base
+        pnpm --filter ethfinance-contracts deploy:scroll
+        pnpm --filter ethfinance-contracts deploy:optimism
+
+Paso 4: El script imprime al final algo así:
+
+        --- Frontend .env.local (copy) ---
+        NEXT_PUBLIC_VAULT_<RED>=0x...
+        NEXT_PUBLIC_GOAL_MANAGER_<RED>=0x...
+        NEXT_PUBLIC_PAYMENT_ROUTER_<RED>=0x...
+        NEXT_PUBLIC_REPUTATION_<RED>=0x...
+
+Paso 5a (LOCAL): pega esas 4 líneas en frontend/.env.local y reinicia
+                 `pnpm dev` (Next solo lee env en arranque).
+Paso 5b (PROD):  pega esas 4 líneas en las Environment Variables del
+                 hosting (Production + Preview + Development) y re-deploy.
+
+Paso 6: Borra la clave de contracts/.env (déjala en blanco) por higiene.
+
+Paso 7: Verifica:
+        - Conecta MetaMask
+        - Cambia a la red
+        - El badge superior debe decir "Red activa" en verde
+        - Deposita 1 USDC (de faucet.circle.com en esa misma red)
+        - Si pasa la tx -> todo funciona
+
+
+================================================================================
+7) TROUBLESHOOTING
+================================================================================
+
+A) "bad address checksum" en el navegador después del fix:
+   -> Es cache. Soluciones (en orden):
+      1) En el navegador: Ctrl+Shift+R (hard reload) en localhost:3000
+         o en la URL de prod.
+      2) En el server local: borra .next y reinicia
+              rm -rf frontend/.next && pnpm dev
+      3) En producción: re-deploy (Vercel: Deployments -> Redeploy).
+
+B) "USDC disponible pero faltan contratos EthFinance desplegados":
+   -> Significa que CONTRACT_ADDRESSES[chainId].smartVault está vacío.
+      Solución: o desplegaste pero no agregaste las env vars al hosting,
+      o las agregaste pero no redeployaste el frontend.
+
+C) MetaMask rechaza el switch de red:
+   -> La red probablemente no está añadida en MetaMask. El componente
+      WalletStatus / botón "Switch network" debería ofrecer añadirla
+      automáticamente con los datos de SUPPORTED_CHAINS.
+
+D) USDC sale en 0 aunque te lo dio el faucet:
+   -> Verifica que en faucet.circle.com seleccionaste la RED CORRECTA
+      (cada chain tiene un USDC distinto; no son intercambiables).
+
+E) Deposit dice "Allowance insuficiente" o similar:
+   -> Es normal la primera vez. MetaMask pide DOS firmas:
+      1) approve(USDC, SmartVault, monto)
+      2) deposit(monto)
+      Acepta las dos. Después, solo pedirá deposit hasta que se agote
+      el allowance.
+
+F) AI Copilot no responde:
+   -> Es opcional. Si no quieres LLM real, funciona en modo demo con
+      reglas hardcoded. Para producción real, setea DEEPSEEK_API_KEY
+      en el backend.
+
+
+================================================================================
+8) RESUMEN ULTRA-CORTO PARA SCROLL EN PRODUCCIÓN
+================================================================================
+
+    1. git push (commit que tiene el fix de checksum aplicado).
+    2. En Vercel/hosting, añade estas 4 vars (Production + Preview + Dev):
+         NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA=0x95Df8D0A9Ff0fcB9D3a5778b7a72E231DAff8aC4
+         NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA=0x72704695cEE3fbF38EF68Ed5F849A6F4E468Dd33
+         NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA=0xc18d514daA63f7733850121cE02FC995197314d1
+         NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA=0xa1C7142598Cbd26135544b074D4cee04ddd61002
+    3. Re-deploy.
+    4. En MetaMask, cambia a Scroll Sepolia (chainId 534351).
+    5. La app reconoce el chain y opera con el USDC de Scroll
+       (0x2a56d0544C45A59486665a83987C65317367B901) y los contratos
+       desplegados de arriba, igual que con Arbitrum.
+
+Fin.

@@ -43,7 +43,7 @@ export function FinanceHeroLanding({ scrollRootRef }: FinanceHeroLandingProps) {
           <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[420px] rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-bg-muted order-2">
             <FinanceHeroVisual className="absolute inset-0 w-full h-full object-cover" />
             <div
-              className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[var(--bg-base)]/70 via-transparent to-transparent lg:bg-gradient-to-l lg:from-[var(--bg-base)]/50"
+              className="absolute inset-0 pointer-events-none bg-linear-to-t from-[var(--bg-base)]/70 via-transparent to-transparent lg:bg-linear-to-l lg:from-[var(--bg-base)]/50"
               aria-hidden
             />
           </div>
