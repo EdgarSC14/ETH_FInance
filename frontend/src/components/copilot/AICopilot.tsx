@@ -375,24 +375,25 @@ export function AICopilot() {
 
   return (
     <div className="grid grid-cols-1 items-start gap-4 sm:gap-6 xl:grid-cols-2">
-      <GlassCard className="card-padding flex min-h-0 flex-col copilot-panel-height" hover={false}>
-        <div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-500/25 bg-gradient-to-br from-emerald-600/20 to-emerald-500/5">
-              <Bot className="h-5 w-5 text-emerald-400" aria-hidden />
-            </div>
-            <div>
-              <div className="text-sm font-semibold tracking-tight text-[var(--text-primary)]">{es.copilot.title}</div>
-              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-emerald-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                </span>
-                {es.copilot.online}
+      <GlassCard className="card-padding flex min-h-0 flex-col overflow-hidden copilot-panel-height" hover={false}>
+        <header className="copilot-panel-header">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="copilot-header-brand flex min-w-0 gap-3">
+              <div className="copilot-header-logo">
+                <Bot className="h-5 w-5 text-emerald-400" aria-hidden />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold tracking-tight text-[var(--text-primary)]">{es.copilot.title}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-emerald-400">
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  {es.copilot.online}
+                </p>
               </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center justify-end gap-2 sm:ml-2">
             {chatHistory.length > 0 && (
               <Button
                 size="sm"
@@ -414,8 +415,9 @@ export function AICopilot() {
             >
               {es.copilot.generatePlan}
             </Button>
+            </div>
           </div>
-        </div>
+        </header>
 
         <div
           ref={chatScrollRef}

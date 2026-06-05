@@ -535,12 +535,45 @@ body {
   }
 }
 
+.copilot-panel-header {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+}
+
+.copilot-header-brand {
+  align-items: center;
+}
+
+.copilot-header-logo {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in srgb, var(--accent-muted) 20%, transparent),
+    color-mix(in srgb, var(--accent) 5%, transparent)
+  );
+}
+
 .copilot-chat-scroll {
   position: relative;
+  z-index: 1;
+  isolation: isolate;
+  padding-top: clamp(1.25rem, 3.5vh, 2rem);
   mask-image: linear-gradient(
     to bottom,
-    transparent 0,
-    #000 0.75rem,
+    #000 0,
     #000 calc(100% - 0.75rem),
     transparent 100%
   );
