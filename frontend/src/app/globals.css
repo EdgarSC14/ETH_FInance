@@ -71,6 +71,31 @@
   box-sizing: border-box;
 }
 
+/* Landing: centrar título en el viewport visible (debajo del nav) */
+.hero-landing {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-landing-inner {
+  flex: 1;
+  min-height: var(--section-height);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  align-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-bottom: clamp(2.5rem, 6vh, 3.5rem);
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .hero-landing-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+}
+
 .page-shell {
   width: 100%;
   max-width: var(--page-max);
@@ -499,15 +524,64 @@ body {
 }
 
 .copilot-panel-height {
-  height: min(32rem, calc(var(--section-height) - 10rem));
-  max-height: 32rem;
+  height: min(36rem, calc(var(--section-height) - 8rem));
+  max-height: 36rem;
 }
 
 @media (max-width: 640px) {
   .copilot-panel-height {
-    height: min(28rem, calc(100dvh - var(--content-top) - 6rem));
-    max-height: calc(100dvh - var(--content-top) - 6rem);
+    height: min(30rem, calc(100dvh - var(--content-top) - 5rem));
+    max-height: calc(100dvh - var(--content-top) - 5rem);
   }
+}
+
+.copilot-chat-scroll {
+  position: relative;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 0.75rem,
+    #000 calc(100% - 0.75rem),
+    transparent 100%
+  );
+}
+
+.copilot-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-muted) 88%, transparent);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.copilot-composer:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-subtle));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.copilot-composer-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.5rem;
+  max-height: 6rem;
+  resize: none;
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.625rem;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.copilot-composer-input::placeholder {
+  color: var(--text-muted);
+}
+
+.copilot-composer-input:focus {
+  outline: none;
 }
 
 .list-panel-scroll {

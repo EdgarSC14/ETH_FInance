@@ -1,11 +1,12 @@
 "use client";
 
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownLeft, Wallet, Landmark } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, Landmark } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { MintMockUsdcButton } from "@/components/dashboard/MintMockUsdcButton";
+import { VaultActionButtons } from "@/components/dashboard/VaultActionButtons";
 import { useAppStore } from "@/store/useAppStore";
 import { useWallet } from "@/hooks/useWallet";
 import { CONTRACT_ADDRESSES } from "@/lib/constants";
@@ -135,6 +136,17 @@ export function BalanceCard() {
                 <div className="stat-tile-value text-xl">{formatUSDC((walletUsdcBalance ?? 0) + vaultBalance)}</div>
               </div>
             </div>
+
+            <div className="space-y-3 border-t border-[var(--border-subtle)] pt-5">
+              <MintMockUsdcButton />
+              <VaultActionButtons
+                mode="onchain"
+                vaultBalance={vaultBalance}
+                walletUsdcBalance={walletUsdcBalance}
+                onDeposit={() => setDepositModalOpen(true)}
+                onWithdraw={() => setWithdrawModalOpen(true)}
+              />
+            </div>
           </>
         )}
 
@@ -167,7 +179,7 @@ export function BalanceCard() {
         )}
 
         {showDemoBudget && (
-          <div className="flex items-center justify-between pt-1 gap-3 flex-wrap">
+          <div className="space-y-4 border-t border-[var(--border-subtle)] pt-5">
             <div
               className={`flex items-center gap-1.5 text-sm font-medium font-amount ${
                 isPositive ? "text-emerald-400" : "text-red-400"
@@ -177,38 +189,12 @@ export function BalanceCard() {
               {isPositive ? es.dashboard.monthlySurplus : es.dashboard.monthlyDeficit}:{" "}
               {formatUSDC(Math.abs(surplus))}
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="secondary"
-                onClick={() => setWithdrawModalOpen(true)}
-                icon={<ArrowDownLeft className="w-4 h-4" />}
-                size="sm"
-                disabled={vaultBalance <= 0}
-              >
-                {es.dashboard.withdraw}
-              </Button>
-              <Button onClick={() => setDepositModalOpen(true)} icon={<ArrowUpRight className="w-4 h-4" />} size="sm">
-                {es.dashboard.deposit}
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {isConnected && chainOk && chainReady && (
-          <div className="flex justify-end gap-2 flex-wrap">
-            <MintMockUsdcButton />
-            <Button
-              variant="secondary"
-              onClick={() => setWithdrawModalOpen(true)}
-              icon={<ArrowDownLeft className="w-4 h-4" />}
-              size="sm"
-              disabled={vaultBalance <= 0}
-            >
-              {es.dashboard.withdraw}
-            </Button>
-            <Button onClick={() => setDepositModalOpen(true)} icon={<ArrowUpRight className="w-4 h-4" />} size="sm">
-              {es.dashboard.depositToVault}
-            </Button>
+            <VaultActionButtons
+              mode="demo"
+              vaultBalance={vaultBalance}
+              onDeposit={() => setDepositModalOpen(true)}
+              onWithdraw={() => setWithdrawModalOpen(true)}
+            />
           </div>
         )}
       </div>
