@@ -89,7 +89,7 @@ export function BalanceCard() {
           </div>
         )}
 
-        {isConnected && chainOk && chainReady && (
+        {isConnected && chainOk && (
           <>
             <div>
               <div className="text-[var(--text-muted)] text-[10px] uppercase tracking-wider mb-2 flex items-center gap-2">
@@ -101,6 +101,8 @@ export function BalanceCard() {
               <div className="font-amount font-semibold text-[var(--text-primary)] tracking-tight">
                 {walletUsdcBalance == null && onChainBalancesLoading ? (
                   <span className="text-[var(--text-muted)]">—</span>
+                ) : walletUsdcBalance == null && !onChainBalancesLoading ? (
+                  <span className="text-amber-400/90 text-sm font-sans">{es.dashboard.balanceReadFailed}</span>
                 ) : (
                   <>$<AnimatedNumber value={walletUsdcBalance ?? 0} decimals={2} /></>
                 )}
@@ -124,7 +126,12 @@ export function BalanceCard() {
                 <div className="min-w-0">
                   <div className="stat-tile-label">{es.dashboard.smartVault}</div>
                   <div className="stat-tile-value">{formatUSDC(vaultBalance)}</div>
-                  {!hasVaultAddr && (
+                  {!chainReady && (
+                    <div className="text-[10px] text-amber-400/90 mt-1 max-w-[220px]">
+                      {es.dashboard.vaultNeedsDeploy}
+                    </div>
+                  )}
+                  {chainReady && !hasVaultAddr && (
                     <div className="text-[10px] text-amber-400/90 mt-1 max-w-[220px]">
                       {es.dashboard.noContractEnv}
                     </div>

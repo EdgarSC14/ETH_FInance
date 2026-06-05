@@ -1,0 +1,11 @@
+{
+  "network": "baseSepolia",
+  "chainId": 84532,
+  "deployer": "0x0000000000000000000000000000000000000000",
+  "deployedAt": "1970-01-01T00:00:00.000Z",
+  "usdc": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+  "smartVault": "",
+  "goalManager": "",
+  "paymentRouter": "",
+  "reputationRegistry": ""
+}

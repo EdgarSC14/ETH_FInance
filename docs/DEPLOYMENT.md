@@ -51,9 +51,26 @@ NEXT_PUBLIC_PAYMENT_ROUTER_ARBITRUM_SEPOLIA=0xC4f042E8C205735A7b0224451c4c5dD88f
 NEXT_PUBLIC_REPUTATION_ARBITRUM_SEPOLIA=0xD55d3B323D168BcFD00aB2209Cb2f4C24f411a06
 ```
 
-### Base Sepolia
+### Base Sepolia (84532) — tras `deploy:base`
 
-Rellena tras `deploy:base` (ver salida del script).
+Mismo flujo que Scroll. **No reutilices** las direcciones de Scroll/Arbitrum; cada red tiene contratos distintos.
+
+```bash
+cp contracts/.env.example contracts/.env
+# DEPLOYER_PRIVATE_KEY=... (wallet con ETH en Base Sepolia)
+pnpm --filter ethfinance-contracts deploy:base
+```
+
+Pega aquí las 4 líneas que imprime el script, por ejemplo:
+
+```env
+NEXT_PUBLIC_VAULT_BASE_SEPOLIA=0x...
+NEXT_PUBLIC_GOAL_MANAGER_BASE_SEPOLIA=0x...
+NEXT_PUBLIC_PAYMENT_ROUTER_BASE_SEPOLIA=0x...
+NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA=0x...
+```
+
+Luego actualiza `frontend/src/lib/constants.ts` (defaults) o solo Vercel + **redeploy**.
 
 ### Backend + frontend (Vercel Services)
 
@@ -121,5 +138,15 @@ pnpm verify:addresses
 3. Redeploy.
 4. MetaMask → Scroll Sepolia (`534351`).
 5. Operar con USDC y contratos de Scroll.
+
+## 9. Base Sepolia en producción (resumen)
+
+1. ETH de testnet en Base Sepolia ([Coinbase Faucet](https://portal.cdp.coinbase.com/products/faucet) o similar).
+2. `pnpm --filter ethfinance-contracts deploy:base`.
+3. Copiar las 4 `NEXT_PUBLIC_*_BASE_SEPOLIA` a Vercel (o integrar en `constants.ts` y push).
+4. Redeploy frontend.
+5. MetaMask → Base Sepolia (`84532`).
+
+---
 
 Contratos **no** se despliegan en Vercel; solo el frontend/backend. Ver `vercel.json` (`experimentalServices`).

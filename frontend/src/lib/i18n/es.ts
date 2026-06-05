@@ -110,6 +110,8 @@ export const es = {
     wrongNetworkHint: "Cambia a una red con contratos desplegados para usar la bóveda, metas y pagos.",
     switchTo: "Cambiar a",
     partialChainHint: "USDC disponible en esta red, pero faltan contratos EthFinance desplegados.",
+    balanceReadFailed: "No se pudo leer USDC (revisa red/RPC o recarga la página).",
+    vaultNeedsDeploy: "Bóveda no desplegada en esta red — el USDC en cartera sí se muestra arriba.",
     networkArbitrum: "Arbitrum Sepolia",
     networkBase: "Base Sepolia",
     nativeEthOnNetwork: "ETH nativo en esta red (gas):",
