@@ -24,21 +24,22 @@ export const CONTRACT_ADDRESSES: Record<
     reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_BASE_SEPOLIA || "",
     usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
   },
-  // Scroll Sepolia
+  // Scroll Sepolia — Circle no tiene USDC canónico aquí. Se despliega un
+  // MockUSDC al correr `pnpm deploy:scroll`; su dirección se inyecta via env.
   534351: {
     smartVault: process.env.NEXT_PUBLIC_VAULT_SCROLL_SEPOLIA || "",
     goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_SCROLL_SEPOLIA || "",
     paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_SCROLL_SEPOLIA || "",
     reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_SCROLL_SEPOLIA || "",
-    usdc: "0x2a56D0544c45a59486665a83987c65317367b901",
+    usdc: process.env.NEXT_PUBLIC_USDC_SCROLL_SEPOLIA || "",
   },
-  // Optimism Sepolia
+  // Optimism Sepolia — USDC canónico de Circle (corregido).
   11155420: {
     smartVault: process.env.NEXT_PUBLIC_VAULT_OPTIMISM_SEPOLIA || "",
     goalManager: process.env.NEXT_PUBLIC_GOAL_MANAGER_OPTIMISM_SEPOLIA || "",
     paymentRouter: process.env.NEXT_PUBLIC_PAYMENT_ROUTER_OPTIMISM_SEPOLIA || "",
     reputationRegistry: process.env.NEXT_PUBLIC_REPUTATION_OPTIMISM_SEPOLIA || "",
-    usdc: "0x5fd84259d06603F7AA9162260a644da2997f813A",
+    usdc: process.env.NEXT_PUBLIC_USDC_OPTIMISM_SEPOLIA || "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
   },
   // Local Hardhat
   1337: {

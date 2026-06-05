@@ -36,6 +36,7 @@ function GoalCard({
   onCancel?: (goal: Goal) => void;
 }) {
   const progress = percentOf(goal.savedAmount, goal.targetAmount);
+  const progressRounded = Math.round(progress);
   const days = daysUntil(goal.deadline);
   const isComplete = goal.status === "completed" || progress >= 100;
   const isOnChain = goal.id.startsWith("chain-");
@@ -54,7 +55,7 @@ function GoalCard({
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-[var(--text-primary)] font-medium text-sm">{goal.name}</span>
             <Badge variant={isComplete ? "success" : days < 30 ? "warning" : "neutral"}>
-              {isComplete ? es.goals.complete : `${Math.round(progress)}%`}
+              {isComplete ? es.goals.complete : `${progressRounded}%`}
             </Badge>
             {isOnChain && (
               <Badge variant="income" className="text-[9px] py-0 px-1.5">
@@ -76,11 +77,20 @@ function GoalCard({
               {es.goals.perMonth}
             </span>
           </div>
-          <div className="h-1.5 bg-white/5 rounded-full mt-2 overflow-hidden">
+          <div
+            className="h-2 bg-white/5 rounded-full mt-2 overflow-hidden relative"
+            role="progressbar"
+            aria-valuenow={progressRounded}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${goal.name}: ${progressRounded}% completado`}
+          >
             <motion.div
-              className="h-full rounded-full bg-emerald-500"
+              className={`h-full rounded-full shadow-[0_0_8px_rgba(16,185,129,0.45)] ${
+                isComplete ? "bg-emerald-400" : "bg-emerald-500"
+              }`}
               initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
+              animate={{ width: `${Math.max(progress, 0)}%` }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.05 }}
             />
           </div>

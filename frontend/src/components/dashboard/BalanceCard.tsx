@@ -5,10 +5,11 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { MintMockUsdcButton } from "@/components/dashboard/MintMockUsdcButton";
 import { useAppStore } from "@/store/useAppStore";
 import { useWallet } from "@/hooks/useWallet";
 import { CONTRACT_ADDRESSES } from "@/lib/constants";
-import { getSupportedChainIds, getChainLabel, isChainFullyDeployed } from "@/lib/deployments";
+import { getDeployedChainIds, getChainLabel, isChainFullyDeployed } from "@/lib/deployments";
 import { formatUSDC } from "@/lib/utils";
 import { staggerItem } from "@/lib/motion";
 import { es } from "@/lib/i18n/es";
@@ -30,7 +31,7 @@ export function BalanceCard() {
   const chainOk = !!cfg?.usdc;
   const chainReady = isChainFullyDeployed(chainId);
   const hasVaultAddr = !!cfg?.smartVault?.trim();
-  const supportedChains = getSupportedChainIds();
+  const supportedChains = getDeployedChainIds();
 
   const surplus = monthlyIncome - monthlyExpenses;
   const isPositive = surplus >= 0;
@@ -195,6 +196,7 @@ export function BalanceCard() {
 
         {isConnected && chainOk && chainReady && (
           <div className="flex justify-end gap-2 flex-wrap">
+            <MintMockUsdcButton />
             <Button
               variant="secondary"
               onClick={() => setWithdrawModalOpen(true)}
