@@ -1,0 +1,37 @@
+# Secrets — API keys (DeepSeek, Groq, Gemini, etc.)
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+!.env*.example
+
+# Dependencies
+node_modules/
+
+# TypeScript build output
+dist/
+
+# Test coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Keys and certs
+*.pem

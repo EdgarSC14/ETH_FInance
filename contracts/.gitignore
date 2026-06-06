@@ -1,0 +1,48 @@
+# Secrets — never commit real keys or API tokens
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+!.env*.example
+
+# Dependencies
+node_modules/
+
+# Hardhat build output
+cache/
+artifacts/
+typechain-types/
+
+# Deploy outputs (addresses from real deploys; keep *.example.json)
+deployments/*.json
+!deployments/*.example.json
+
+# Hardhat Ignition / OpenZeppelin upgrades (if added later)
+ignition/deployments/
+.openzeppelin/
+
+# Test coverage
+coverage/
+coverage.json
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Keys and certs
+*.pem

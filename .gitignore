@@ -1,32 +1,46 @@
 # Dependencies
 node_modules/
 
-# Environment (keep examples)
+# Environment — keep only *.example templates in git
 .env
 .env.local
 .env.*.local
+.env.development.local
+.env.production.local
+.env.test.local
 !.env.example
 !.env*.example
 
-# Next.js
+# Next.js (frontend)
 frontend/.next/
 frontend/out/
 
-# Hardhat / contracts build artifacts
+# Hardhat / contracts (see also contracts/.gitignore)
 contracts/cache/
 contracts/artifacts/
 contracts/typechain-types/
-
-# Per-network deploy output (contains addresses only — keep examples)
 contracts/deployments/*.json
 !contracts/deployments/*.example.json
 
-# Build output
+# Backend build output
+backend/dist/
+
+# Build output (generic)
 dist/
 build/
 *.tsbuildinfo
 
-# Package managers
+# Test & E2E artifacts
+coverage/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
+
+# Linters
+.eslintcache
+
+# Package managers (monorepo uses pnpm-lock.yaml)
 package-lock.json
 yarn.lock
 bun.lockb
@@ -37,18 +51,23 @@ bun.lockb
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+npm-debug.log*
 
 # OS
 .DS_Store
 Thumbs.db
 
-# IDE
+# IDE / editor
 .vscode/
 .idea/
+*.swp
+*~
 
-# Vercel
+# Hosting
 .vercel
 
-# Misc
+# Keys and certs
 *.pem
-coverage/
+*.key
+*.p12
+*.pfx
